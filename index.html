@@ -1,0 +1,450 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cenk Çayan | CNC Freze</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+:root {
+  --blue: #2498ff;
+  --bg: #080d12;
+  --muted: #a0afbd;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: #f1f5f9;
+  font-family: Inter, Arial, sans-serif;
+}
+a { color: inherit; text-decoration: none; }
+header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #080d12ee;
+  backdrop-filter: blur(15px);
+  border-bottom: 1px solid #ffffff1b;
+  padding: 17px 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.logo { font-weight: 800; font-size: 19px; }
+.logo span { color: var(--blue); }
+nav { display: flex; gap: 24px; }
+nav a { font-size: 12px; color: #cbd5e1; }
+nav a:hover { color: var(--blue); }
+button, .btn {
+  cursor: pointer;
+  border: 0;
+  border-radius: 7px;
+  padding: 13px 19px;
+  background: var(--blue);
+  color: white;
+  font-weight: 700;
+  display: inline-block;
+}
+.hero {
+  min-height: 690px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background:
+    linear-gradient(90deg, #050a10f5 0%, #050a10c9 43%, #050a1030 100%),
+    url("hero.png") center / cover no-repeat;
+}
+.hero-content {
+  padding: 75px 6%;
+  max-width: 720px;
+  animation: appear 1s ease both;
+}
+.eyebrow {
+  color: #65bdff;
+  letter-spacing: 4px;
+  font-size: 11px;
+  font-weight: 700;
+}
+h1 {
+  font-size: clamp(54px, 8vw, 95px);
+  line-height: .98;
+  margin: 25px 0;
+  letter-spacing: -4px;
+}
+h1 span, h2 span { color: var(--blue); }
+.intro {
+  color: #c1ccd6;
+  line-height: 1.9;
+  font-size: 14px;
+}
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-top: 30px;
+  flex-wrap: wrap;
+}
+.secondary {
+  background: transparent;
+  border: 1px solid #6c91ad;
+}
+.status {
+  margin-top: 42px;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: #a7bac9;
+}
+.dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  background: #49dfa0;
+  border-radius: 50%;
+  margin-right: 8px;
+  box-shadow: 0 0 12px #49dfa0;
+  animation: blink 1.5s infinite;
+}
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 35px 5%;
+  background: #0b1219;
+  border-bottom: 1px solid #ffffff16;
+}
+.stat {
+  padding: 15px 20px;
+  border-right: 1px solid #ffffff19;
+}
+.stat:last-child { border: 0; }
+.stat strong {
+  font-size: 35px;
+  display: block;
+}
+.stat small {
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+section.content { padding: 85px 6%; }
+h2 { font-size: clamp(36px, 5vw, 58px); margin: 10px 0 35px; }
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+.card {
+  background: linear-gradient(135deg, #111d27, #0b1118);
+  border: 1px solid #ffffff19;
+  padding: 28px;
+  transition: .3s;
+}
+.card:hover {
+  transform: translateY(-7px);
+  border-color: var(--blue);
+}
+.card .icon { color: var(--blue); font-size: 35px; }
+.card p { color: var(--muted); font-size: 13px; line-height: 1.8; }
+.showcase {
+  min-height: 390px;
+  display: flex;
+  align-items: center;
+  padding: 60px 6%;
+  background:
+    linear-gradient(90deg, #070c12f5, #070c1290),
+    url("hero.png") center 70% / cover;
+}
+.showcase div { max-width: 500px; }
+.contact {
+  padding: 75px 6%;
+  background: #0b1219;
+}
+.contact p { color: var(--muted); line-height: 1.8; }
+footer {
+  padding: 25px 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  color: #8799a9;
+  font-size: 11px;
+  border-top: 1px solid #ffffff18;
+}
+.modal {
+  position: fixed;
+  z-index: 30;
+  inset: 0;
+  background: #000d;
+  display: none;
+  place-items: center;
+  padding: 20px;
+}
+.modal.open { display: grid; }
+.modal-box {
+  width: min(500px, 100%);
+  padding: 28px;
+  background: #0c151e;
+  border: 1px solid #31516a;
+  position: relative;
+}
+.close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: transparent;
+  font-size: 25px;
+}
+.machine {
+  height: 190px;
+  background: linear-gradient(#101e2a, #080d12);
+  border: 1px solid #263c4c;
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  place-items: end center;
+  padding-bottom: 30px;
+}
+.tool {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 24px;
+  height: 110px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg,#28323b,#c0ccd4,#28323b);
+  z-index: 2;
+}
+.workpiece {
+  width: 80%;
+  height: 60px;
+  background: linear-gradient(110deg,#39444c,#bdc7ce,#414b53);
+  transform: skewX(-10deg);
+  display: grid;
+  place-items: center;
+  color: #28313a;
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  box-shadow: 0 10px 20px #0008;
+}
+.machine.running .tool { animation: milling 3s ease-in-out infinite alternate; }
+.machine.running .workpiece { animation: shine 2s infinite alternate; }
+.progress {
+  height: 5px;
+  background: #23313d;
+  margin-top: 15px;
+}
+.progress span {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: var(--blue);
+  transition: width .2s;
+}
+@keyframes appear {
+  from { opacity: 0; transform: translateY(25px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes blink { 50% { opacity: .3; } }
+@keyframes milling {
+  from { left: 35%; top: 0; }
+  to { left: 65%; top: 35px; }
+}
+@keyframes shine {
+  from { filter: brightness(.8); }
+  to { filter: brightness(1.3); }
+}
+@media(max-width:700px) {
+  header { padding: 16px 5%; }
+  nav { display: none; }
+  .hero { min-height: 650px; background-position: 60% center; }
+  .hero-content { padding: 60px 6%; }
+  h1 { letter-spacing: -2px; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .stat { border-bottom: 1px solid #ffffff19; }
+  .cards { grid-template-columns: 1fr; }
+  section.content { padding: 60px 6%; }
+  footer { flex-wrap: wrap; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="#home"><span>⚙</span> CENK ÇAYAN</a>
+  <nav>
+    <a href="#home">Ana Sayfa</a>
+    <a href="#hakkimda">Hakkımda</a>
+    <a href="#hizmetler">Hizmetler</a>
+    <a href="#galeri">Galeri</a>
+    <a href="#iletisim">İletişim</a>
+  </nav>
+  <a class="btn" href="#iletisim">Teklif Al ↗</a>
+</header>
+
+<main>
+<section class="hero" id="home">
+  <div class="hero-content">
+    <p class="eyebrow">● PROFESYONEL CNC FREZE HİZMETLERİ</p>
+    <h1>Cenk Çayan<br><span>CNC Freze</span></h1>
+    <p class="intro">
+      Metal, hassasiyet ve teknolojinin buluştuğu nokta.<br>
+      Detaylarda kusursuzluk, üretimde güven.
+    </p>
+    <div class="actions">
+      <a class="btn" href="#hizmetler">⚙ Hizmetleri Keşfet</a>
+      <button class="secondary" id="watch">▷ İşleme Simülasyonunu İzle</button>
+    </div>
+    <div class="status">
+      <span class="dot"></span>
+      MAKİNE DURUMU <b id="machineStatus">HAZIR</b>
+      &nbsp; | &nbsp; <span id="clock">00:00:00</span>
+    </div>
+  </div>
+</section>
+
+<div class="stats" id="hakkimda">
+  <div class="stat"><strong>100<span style="color:#2498ff">%</span></strong><small>İŞÇİLİK ODAĞI</small></div>
+  <div class="stat"><strong>3<span style="color:#2498ff">+</span></strong><small>ÜRETİM AŞAMASI</small></div>
+  <div class="stat"><strong>24/7</strong><small>DETAYLARA ODAK</small></div>
+  <div class="stat"><strong>01</strong><small>HER PARÇADA ÖZEN</small></div>
+</div>
+
+<section class="content" id="hizmetler">
+  <p class="eyebrow">NE YAPIYORUZ?</p>
+  <h2>Üretimde <span>hassasiyet.</span></h2>
+  <div class="cards">
+    <article class="card">
+      <div class="icon">⌘</div>
+      <h3>CNC Frezeleme</h3>
+      <p>Metal parçaların kontrollü, tekrarlanabilir ve hassas işlenmesi.</p>
+    </article>
+    <article class="card">
+      <div class="icon">◈</div>
+      <h3>Teknik Detay</h3>
+      <p>Ölçü, yüzey kalitesi ve parçanın geometrisine odaklanan işçilik.</p>
+    </article>
+    <article class="card">
+      <div class="icon">⟡</div>
+      <h3>Kontrol ve Kalite</h3>
+      <p>Üretim sürecinde dikkatli kontrol ve temiz sonuç hedefi.</p>
+    </article>
+  </div>
+</section>
+
+<section class="showcase" id="galeri">
+  <div>
+    <p class="eyebrow">ATÖLYEDEN BİR KARE</p>
+    <h2>Metal üzerinde<br><span>bir imza.</span></h2>
+    <p class="intro">Cenk Çayan adı, metal yüzeyde CNC freze ile işlenmiş bir tasarım olarak canlanıyor.</p>
+    <button id="watch2">İşleme Simülasyonunu Başlat ↗</button>
+  </div>
+</section>
+
+<section class="contact" id="iletisim">
+  <p class="eyebrow">BİR SONRAKİ ADIM</p>
+  <h2>Fikrini <span>parçaya dönüştür.</span></h2>
+  <p>Bu tasarım konseptini gerçek iletişim bilgileriyle kişiselleştirebilirsin.</p>
+  <a class="btn" href="mailto:info@example.com">İletişime Geç ↗</a>
+</section>
+</main>
+
+<footer>
+  <b style="color:white">⚙ CENK ÇAYAN</b>
+  <span>© <span id="year"></span> Cenk Çayan · CNC Freze</span>
+  <a href="#home">YUKARI ↑</a>
+</footer>
+
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <button class="close" id="close">×</button>
+    <p class="eyebrow">CNC / İŞLEME SİMÜLASYONU</p>
+    <h2>Metal işleniyor.</h2>
+    <div class="machine" id="machine">
+      <div class="tool"></div>
+      <div class="workpiece">CENK ÇAYAN</div>
+    </div>
+    <div class="progress"><span id="bar"></span></div>
+    <p id="simText">Takım konumlanıyor...</p>
+    <button id="restart">Tekrar Başlat ↻</button>
+  </div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+$("year").textContent = new Date().getFullYear();
+
+function clock() {
+  $("clock").textContent = new Date().toLocaleTimeString("tr-TR", {
+    hour12: false
+  });
+}
+clock();
+setInterval(clock, 1000);
+
+const modal = $("modal");
+const machine = $("machine");
+let timer;
+
+function startSimulation() {
+  clearInterval(timer);
+  machine.classList.add("running");
+  $("machineStatus").textContent = "İŞLENİYOR";
+  $("bar").style.width = "0%";
+
+  const steps = [
+    "Takım konumlanıyor...",
+    "Metal yüzey işleniyor...",
+    "CENK ÇAYAN yazısı oluşturuluyor...",
+    "Son kontrol yapılıyor...",
+    "Simülasyon tamamlandı!"
+  ];
+  const started = Date.now();
+
+  timer = setInterval(() => {
+    const elapsed = (Date.now() - started) / 1000;
+    const progress = Math.min(elapsed / 4 * 100, 100);
+    $("bar").style.width = progress + "%";
+    $("simText").textContent =
+      steps[Math.min(Math.floor(elapsed / .8), steps.length - 1)];
+
+    if (progress >= 100) {
+      clearInterval(timer);
+      $("machineStatus").textContent = "TAMAMLANDI";
+    }
+  }, 100);
+}
+
+function openModal() {
+  modal.classList.add("open");
+  document.body.style.overflow = "hidden";
+  startSimulation();
+}
+function closeModal() {
+  modal.classList.remove("open");
+  document.body.style.overflow = "";
+  machine.classList.remove("running");
+  clearInterval(timer);
+  $("machineStatus").textContent = "HAZIR";
+}
+
+$("watch").addEventListener("click", openModal);
+$("watch2").addEventListener("click", openModal);
+$("close").addEventListener("click", closeModal);
+$("restart").addEventListener("click", startSimulation);
+
+modal.addEventListener("click", e => {
+  if (e.target === modal) closeModal();
+});
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") closeModal();
+});
+</script>
+</body>
+  </html>
+  
